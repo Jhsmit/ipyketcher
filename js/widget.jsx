@@ -26,14 +26,88 @@ const render = createRender(() => {
 	const [inchi, setInchi] = useModelState('inchi');
 	const [inchiKey, setInchiKey] = useModelState('inchi_key');
 
+	// Function to sync all requested formats from Ketcher to Python
+	const syncFormats = async (ketcher) => {
+		try {
+			if (returnFormats.includes('smiles')) {
+				const smilesValue = await ketcher.getSmiles();
+				setSmiles(smilesValue);
+				console.log('Updated SMILES:', smilesValue);
+			}
+
+			if (returnFormats.includes('molfile')) {
+				const molfileValue = await ketcher.getMolfile();
+				setMolfile(molfileValue);
+				console.log('Updated Molfile');
+			}
+
+			if (returnFormats.includes('rxn')) {
+				const rxnValue = await ketcher.getRxn();
+				setRxn(rxnValue);
+				console.log('Updated RXN');
+			}
+
+			if (returnFormats.includes('ket')) {
+				const ketValue = await ketcher.getKet();
+				setKet(ketValue);
+				console.log('Updated KET');
+			}
+
+			if (returnFormats.includes('smarts')) {
+				const smartsValue = await ketcher.getSmarts();
+				setSmarts(smartsValue);
+				console.log('Updated SMARTS');
+			}
+
+			if (returnFormats.includes('cml')) {
+				const cmlValue = await ketcher.getCml();
+				setCml(cmlValue);
+				console.log('Updated CML');
+			}
+
+			if (returnFormats.includes('sdf')) {
+				const sdfValue = await ketcher.getSdf();
+				setSdf(sdfValue);
+				console.log('Updated SDF');
+			}
+
+			if (returnFormats.includes('cdxml')) {
+				const cdxmlValue = await ketcher.getCDXml();
+				setCdxml(cdxmlValue);
+				console.log('Updated CDXml');
+			}
+
+			if (returnFormats.includes('cdx')) {
+				const cdxValue = await ketcher.getCDX();
+				setCdx(cdxValue);
+				console.log('Updated CDX');
+			}
+
+			if (returnFormats.includes('inchi')) {
+				const inchiValue = await ketcher.getInchi();
+				setInchi(inchiValue);
+				console.log('Updated InChI');
+			}
+
+			if (returnFormats.includes('inchi_key')) {
+				const inchiKeyValue = await ketcher.getInchiKey();
+				setInchiKey(inchiKeyValue);
+				console.log('Updated InChI Key');
+			}
+		} catch (error) {
+			console.error('Error syncing formats:', error);
+		}
+	};
+
 	const handleKetcherInit = async (ketcher) => {
 		console.log('Ketcher initialized:', ketcher);
 		setKetcherInstance(ketcher);
 
+		// Wait for structService to be ready
+		await ketcher.structService;
+
 		if (initialMolecule) {
 			try {
-				// Wait for Ketcher's structService to be ready, then set molecule
-				await ketcher.structService;
 				await ketcher.setMolecule(initialMolecule);
 				console.log('Initial molecule set successfully:', initialMolecule);
 			} catch (error) {
@@ -41,80 +115,13 @@ const render = createRender(() => {
 			}
 		}
 
+		// Sync formats after initialization (whether we loaded a molecule or not)
+		await syncFormats(ketcher);
+
 		// Subscribe to change events to sync structure back to Python
 		const subscriber = ketcher.editor.subscribe('change', async (eventData) => {
 			console.log('Structure changed:', eventData);
-
-			try {
-				// Process each requested return format
-				if (returnFormats.includes('smiles')) {
-					const smilesValue = await ketcher.getSmiles();
-					setSmiles(smilesValue);
-					console.log('Updated SMILES:', smilesValue);
-				}
-
-				if (returnFormats.includes('molfile')) {
-					const molfileValue = await ketcher.getMolfile();
-					setMolfile(molfileValue);
-					console.log('Updated Molfile');
-				}
-
-				if (returnFormats.includes('rxn')) {
-					const rxnValue = await ketcher.getRxn();
-					setRxn(rxnValue);
-					console.log('Updated RXN');
-				}
-
-				if (returnFormats.includes('ket')) {
-					const ketValue = await ketcher.getKet();
-					setKet(ketValue);
-					console.log('Updated KET');
-				}
-
-				if (returnFormats.includes('smarts')) {
-					const smartsValue = await ketcher.getSmarts();
-					setSmarts(smartsValue);
-					console.log('Updated SMARTS');
-				}
-
-				if (returnFormats.includes('cml')) {
-					const cmlValue = await ketcher.getCml();
-					setCml(cmlValue);
-					console.log('Updated CML');
-				}
-
-				if (returnFormats.includes('sdf')) {
-					const sdfValue = await ketcher.getSdf();
-					setSdf(sdfValue);
-					console.log('Updated SDF');
-				}
-
-				if (returnFormats.includes('cdxml')) {
-					const cdxmlValue = await ketcher.getCDXml();
-					setCdxml(cdxmlValue);
-					console.log('Updated CDXml');
-				}
-
-				if (returnFormats.includes('cdx')) {
-					const cdxValue = await ketcher.getCDX();
-					setCdx(cdxValue);
-					console.log('Updated CDX');
-				}
-
-				if (returnFormats.includes('inchi')) {
-					const inchiValue = await ketcher.getInchi();
-					setInchi(inchiValue);
-					console.log('Updated InChI');
-				}
-
-				if (returnFormats.includes('inchi_key')) {
-					const inchiKeyValue = await ketcher.getInchiKey();
-					setInchiKey(inchiKeyValue);
-					console.log('Updated InChI Key');
-				}
-			} catch (error) {
-				console.error('Error updating formats on change:', error);
-			}
+			await syncFormats(ketcher);
 		});
 
 		// Store subscriber for cleanup (optional - if we need to unsubscribe later)

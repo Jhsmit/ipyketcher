@@ -11,7 +11,6 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "unknown"
 
 # %%
-return_formats = {}
 
 
 class Widget(anywidget.AnyWidget):
@@ -19,7 +18,6 @@ class Widget(anywidget.AnyWidget):
     _css = pathlib.Path(__file__).parent / "static" / "widget.css"
 
     initial_molecule = traitlets.Unicode("").tag(sync=True)
-
     return_formats = traitlets.List[str]().tag(sync=True)
 
     # Output format traitlets
