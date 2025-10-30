@@ -10,22 +10,45 @@ const structServiceProvider = new StandaloneStructServiceProvider();
 const render = createRender(() => {
 	const [ketcherInstance, setKetcherInstance] = React.useState(null);
 	const [output, setOutput] = React.useState('');
-	const [value, setValue] = useModelState("value");
+	const [initialMolecule, setInitialMolecule] = useModelState("initial_molecule");
+	const [returnFormats, setReturnFormats] = useModelState('return_formats');
+	const [smiles, setSmiles] = useModelState('smiles');
+	const [update, setUpdate] = React.useState(true);
 
 	const handleKetcherInit = async (ketcher) => {
 		console.log('Ketcher initialized:', ketcher);
 		setKetcherInstance(ketcher);
 
-		if (value) {
+		if (initialMolecule) {
 			try {
 				// Wait for Ketcher's structService to be ready, then set molecule
 				await ketcher.structService;
-				await ketcher.setMolecule(value);
-				console.log('Initial molecule set successfully:', value);
+				await ketcher.setMolecule(initialMolecule);
+				console.log('Initial molecule set successfully:', initialMolecule);
 			} catch (error) {
 				console.error('Error setting initial molecule:', error);
 			}
 		}
+
+		// Subscribe to change events to sync structure back to Python
+		const subscriber = ketcher.editor.subscribe('change', async (eventData) => {
+			console.log('Structure changed:', eventData);
+			console.log('return formats', returnFormats);
+			try {
+				if (returnFormats.includes('smiles')) {
+					const smiles = await ketcher.getSmiles();
+					setSmiles(smiles);
+					console.log('Updated SMILES value:', smiles);
+				}
+			} catch (error) {
+				console.error('Error getting SMILES on change:', error);
+			}
+		});
+
+		// Store subscriber for cleanup (optional - if we need to unsubscribe later)
+		return () => {
+			ketcher.editor.unsubscribe('change', subscriber);
+		};
 	}
 
 
