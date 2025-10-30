@@ -22,7 +22,18 @@ class Widget(anywidget.AnyWidget):
 
     return_formats = traitlets.List[str]().tag(sync=True)
 
+    # Output format traitlets
     smiles = traitlets.Unicode("").tag(sync=True)
+    molfile = traitlets.Unicode("").tag(sync=True)
+    rxn = traitlets.Unicode("").tag(sync=True)
+    ket = traitlets.Unicode("").tag(sync=True)
+    smarts = traitlets.Unicode("").tag(sync=True)
+    cml = traitlets.Unicode("").tag(sync=True)
+    sdf = traitlets.Unicode("").tag(sync=True)
+    cdxml = traitlets.Unicode("").tag(sync=True)
+    cdx = traitlets.Unicode("").tag(sync=True)
+    inchi = traitlets.Unicode("").tag(sync=True)
+    inchi_key = traitlets.Unicode("").tag(sync=True)
 
     def _return_formats_default(self):
         return ["smiles"]
