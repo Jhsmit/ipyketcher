@@ -28,74 +28,34 @@ const render = createRender(() => {
 
 	// Function to sync all requested formats from Ketcher to Python
 	const syncFormats = async (ketcher) => {
-		try {
-			if (returnFormats.includes('smiles')) {
-				const smilesValue = await ketcher.getSmiles();
-				setSmiles(smilesValue);
-				console.log('Updated SMILES:', smilesValue);
-			}
+		// Map of format names to their getter functions and setters
+		const formatHandlers = {
+			'smiles': { getter: () => ketcher.getSmiles(), setter: setSmiles },
+			'molfile': { getter: () => ketcher.getMolfile(), setter: setMolfile },
+			'rxn': { getter: () => ketcher.getRxn(), setter: setRxn },
+			'ket': { getter: () => ketcher.getKet(), setter: setKet },
+			'smarts': { getter: () => ketcher.getSmarts(), setter: setSmarts },
+			'cml': { getter: () => ketcher.getCml(), setter: setCml },
+			'sdf': { getter: () => ketcher.getSdf(), setter: setSdf },
+			'cdxml': { getter: () => ketcher.getCDXml(), setter: setCdxml },
+			'cdx': { getter: () => ketcher.getCDX(), setter: setCdx },
+			'inchi': { getter: () => ketcher.getInchi(), setter: setInchi },
+			'inchi_key': { getter: () => ketcher.getInchiKey(), setter: setInchiKey }
+		};
 
-			if (returnFormats.includes('molfile')) {
-				const molfileValue = await ketcher.getMolfile();
-				setMolfile(molfileValue);
-				console.log('Updated Molfile');
+		// Process each requested format
+		for (const format of returnFormats) {
+			if (formatHandlers[format]) {
+				try {
+					const value = await formatHandlers[format].getter();
+					formatHandlers[format].setter(value);
+					console.log(`Updated ${format}:`, format === 'smiles' ? value : `(${value.length} chars)`);
+				} catch (error) {
+					// Handle errors gracefully - set to empty string if format can't be generated
+					console.warn(`Could not get ${format}:`, error.message);
+					formatHandlers[format].setter('');
+				}
 			}
-
-			if (returnFormats.includes('rxn')) {
-				const rxnValue = await ketcher.getRxn();
-				setRxn(rxnValue);
-				console.log('Updated RXN');
-			}
-
-			if (returnFormats.includes('ket')) {
-				const ketValue = await ketcher.getKet();
-				setKet(ketValue);
-				console.log('Updated KET');
-			}
-
-			if (returnFormats.includes('smarts')) {
-				const smartsValue = await ketcher.getSmarts();
-				setSmarts(smartsValue);
-				console.log('Updated SMARTS');
-			}
-
-			if (returnFormats.includes('cml')) {
-				const cmlValue = await ketcher.getCml();
-				setCml(cmlValue);
-				console.log('Updated CML');
-			}
-
-			if (returnFormats.includes('sdf')) {
-				const sdfValue = await ketcher.getSdf();
-				setSdf(sdfValue);
-				console.log('Updated SDF');
-			}
-
-			if (returnFormats.includes('cdxml')) {
-				const cdxmlValue = await ketcher.getCDXml();
-				setCdxml(cdxmlValue);
-				console.log('Updated CDXml');
-			}
-
-			if (returnFormats.includes('cdx')) {
-				const cdxValue = await ketcher.getCDX();
-				setCdx(cdxValue);
-				console.log('Updated CDX');
-			}
-
-			if (returnFormats.includes('inchi')) {
-				const inchiValue = await ketcher.getInchi();
-				setInchi(inchiValue);
-				console.log('Updated InChI');
-			}
-
-			if (returnFormats.includes('inchi_key')) {
-				const inchiKeyValue = await ketcher.getInchiKey();
-				setInchiKey(inchiKeyValue);
-				console.log('Updated InChI Key');
-			}
-		} catch (error) {
-			console.error('Error syncing formats:', error);
 		}
 	};
 
