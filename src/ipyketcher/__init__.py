@@ -5,7 +5,7 @@ import anywidget
 import traitlets
 
 try:
-    __version__ = importlib.metadata.version("ipyketcher_anywidget")
+    __version__ = importlib.metadata.version("ipyketcher")
 except importlib.metadata.PackageNotFoundError:
     __version__ = "unknown"
 

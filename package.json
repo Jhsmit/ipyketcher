@@ -1,7 +1,7 @@
 {
 	"scripts": {
 		"dev": "npm run build -- --sourcemap=inline --watch",
-		"build": "esbuild js/widget.jsx --minify --format=esm --bundle --outdir=src/ipyketcher_anywidget/static"
+		"build": "esbuild js/widget.jsx --minify --format=esm --bundle --outdir=src/ipyketcher/static"
 	},
 	"dependencies": {
 		"@anywidget/react": "^0.2.0",

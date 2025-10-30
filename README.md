@@ -1,15 +1,15 @@
-# ipyketcher_anywidget
+# ipyketcher
 
 ## Installation
 
 ```sh
-pip install ipyketcher_anywidget
+pip install ipyketcher
 ```
 
 or with [uv](https://github.com/astral-sh/uv):
 
 ```sh
-uv add ipyketcher_anywidget
+uv add ipyketcher
 ```
 
 ## Development

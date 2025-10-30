@@ -1,4 +1,4 @@
-.ipyketcher_anywidget button {
+.ipyketcher button {
 	background: linear-gradient(
 		300deg,
 		#9933ff 33.26%,
@@ -18,6 +18,6 @@
 	transition: transform 0.25s ease-in-out;
 }
 
-.ipyketcher_anywidget button:hover {
+.ipyketcher button:hover {
 	transform: scale(1.05);
 }
