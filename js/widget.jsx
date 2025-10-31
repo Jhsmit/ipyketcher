@@ -12,6 +12,8 @@ const render = createRender(() => {
 	const [output, setOutput] = React.useState('');
 	const [initialMolecule, setInitialMolecule] = useModelState("initial_molecule");
 	const [returnFormats, setReturnFormats] = useModelState('return_formats');
+	//  height hooks
+	const [height, setHeight] = useModelState('height');
 
 	// Output format state hooks
 	const [smiles, setSmiles] = useModelState('smiles');
@@ -99,24 +101,26 @@ const render = createRender(() => {
 
 	return (
 		<div className="ipyketcher">
-			<div style={{ width: '100%', height: '600px', border: '1px solid #ccc' }}>
+			{/* Ketcher Editor Container */}
+
+			<div style={{ width: '100%', height: height }}>
 				<Editor
 					staticResourcesUrl={process.env.PUBLIC_URL} // is undefined
 					structServiceProvider={structServiceProvider}
 					onInit={handleKetcherInit}
 				/>
 			</div>
-			<div style={{ margin: '20px 0' }}>
+			{/* <div style={{ margin: '20px 0' }}>
 				<button onClick={getMolecule} >
 					Get SMILES
-				</button>
-				{/* <button onClick={getMolfile} style={buttonStyle}>
+				</button> */}
+			{/* <button onClick={getMolfile} style={buttonStyle}>
 					Get Molfile
 				</button>
 				<button onClick={clearEditor} style={buttonStyle}>
 					Clear
 				</button> */}
-			</div>
+			{/* </div> */}
 		</div>
 
 
