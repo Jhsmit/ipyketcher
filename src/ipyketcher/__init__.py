@@ -10,15 +10,15 @@ try:
 except importlib.metadata.PackageNotFoundError:
     __version__ = "unknown"
 
-# %%
 
-
-class Widget(anywidget.AnyWidget):
+class KetcherEditor(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "static" / "widget.js"
     _css = pathlib.Path(__file__).parent / "static" / "widget.css"
 
     initial_molecule = traitlets.Unicode("").tag(sync=True)
     return_formats = traitlets.List[str]().tag(sync=True)
+
+    height = traitlets.Unicode("500px").tag(sync=True)
 
     # Output format traitlets
     smiles = traitlets.Unicode("").tag(sync=True)
