@@ -1,3 +1,4 @@
+# %%
 import pathlib
 
 try:
@@ -15,7 +16,7 @@ class KetcherEditor(AnyWidgetComponent):
     initial_molecule = param.String(default="")
     return_formats = param.List(default=["smiles"])
 
-    height = param.String(default="500px")
+    height = param.Integer(default=500)
 
     # Output format parameters
     smiles = param.String(default="")
