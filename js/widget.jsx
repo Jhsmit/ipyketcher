@@ -66,6 +66,12 @@ const render = createRender(() => {
 		// Wait for structService to be ready
 		await ketcher.structService;
 
+		// expose ketcher instance
+		// see: https://github.com/epam/ketcher/issues/7388
+		// appears to be needed for using ketcher.setMolecule
+		// https://github.com/epam/ketcher/blob/9e8bdf651db4e6a8804f3ba1aeb405f3b2e6f57b/packages/ketcher-core/src/utilities/KetcherLogger.ts#L14
+		window.ketcher = ketcher;
+
 		if (initialMolecule) {
 			try {
 				await ketcher.setMolecule(initialMolecule);
@@ -91,34 +97,11 @@ const render = createRender(() => {
 	}
 
 
-
-	const getMolecule = async () => {
-		if (ketcherInstance) {
-			try {
-				const smiles = await ketcherInstance.getSmiles();
-				setOutput(`SMILES: ${smiles}`);
-				console.log('SMILES:', smiles);
-
-				// // Send to Python backend
-				// await fetch('http://localhost:5000/api/save_molecule', {
-				//   method: 'POST',
-				//   headers: { 'Content-Type': 'application/json' },
-				//   body: JSON.stringify({ format: 'smiles', data: smiles })
-				// });
-			} catch (error) {
-				console.error('Error getting SMILES:', error);
-				setOutput(`Error: ${error.message}`);
-			}
-		} else {
-			setOutput('Ketcher not initialized yet');
-		}
-	};
-
 	return (
 		<div className="ipyketcher">
 			<div style={{ width: '100%', height: '600px', border: '1px solid #ccc' }}>
 				<Editor
-					staticResourcesUrl={process.env.PUBLIC_URL}
+					staticResourcesUrl={process.env.PUBLIC_URL} // is undefined
 					structServiceProvider={structServiceProvider}
 					onInit={handleKetcherInit}
 				/>
