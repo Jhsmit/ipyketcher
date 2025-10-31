@@ -67,6 +67,19 @@ Open `example.ipynb` in JupyterLab, VS Code, or your favorite editor
 to start developing. Changes made in `js/` will be reflected
 in the notebook.
 
+
+Creating a new release:
+1. Bump the version in `pyproject.toml`.
+2. Create a new git tag with the version.
+3. Build and upload the package to PyPI:
+
+```sh
+npm build
+hatch build
+hatch publish -u __token__ -a pypi-<your-token>
+```
+
+
 ### Hot reloading
 
 Set anywidget hot reloading on windows:
