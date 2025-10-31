@@ -4,8 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ipyketcher"
+license = { file = "LICENSE" }
 version = "0.0.0"
 dependencies = ["anywidget"]
+description = "Ketcher editor as anywidget"
 readme = "README.md"
 
 # For projects not using `uv`, you can install these development dependencies with:
