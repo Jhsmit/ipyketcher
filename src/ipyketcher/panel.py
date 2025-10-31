@@ -9,8 +9,8 @@ except ImportError:
 
 
 class KetcherEditor(AnyWidgetComponent):
-    _esm = pathlib.Path(__file__).parent.parent / "static" / "widget.js"
-    _stylesheets = [str(pathlib.Path(__file__).parent.parent / "static" / "widget.css")]
+    _esm = pathlib.Path(__file__).parent / "static" / "widget.js"
+    _stylesheets = [str(pathlib.Path(__file__).parent / "static" / "widget.css")]
 
     initial_molecule = param.String(default="")
     return_formats = param.List(default=["smiles"])
