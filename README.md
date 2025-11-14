@@ -1,5 +1,9 @@
 # ipyketcher
 
+Ipyketcher is a widget implementation of the [Ketcher](https://lifescience.opensource.epam.com/ketcher/index.html) chemical structure editor for use in Jupyter notebooks and other environments supporting ipywidgets.
+
+![image_example](assets/screenshot_rdkit_output.png)
+
 ## How to use
 
 ```python
@@ -18,6 +22,7 @@ You can now draw a structure, and access the currently drawn molecule in smiles 
 
 Other supported formats are: 'rxn', 'ket', 'smarts', 'cml', 'sdf', 'cdxml', 'cdx', 'inchi', 'inchi_key'. Set the format you want synchronized back to Python using the `return_formats` parameter, and observe the output via the corresponding attribute on the `KetcherEditor` instance.
 
+The `example.ipynb` has a more elaborate exmaple of usage with RDKit integration.
 
 ## Installation
 
