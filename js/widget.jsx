@@ -9,11 +9,12 @@ const structServiceProvider = new StandaloneStructServiceProvider();
 
 const render = createRender(() => {
 	const [ketcherInstance, setKetcherInstance] = React.useState(null);
-	const [output, setOutput] = React.useState('');
 	const [initialMolecule, setInitialMolecule] = useModelState("initial_molecule");
 	const [returnFormats, setReturnFormats] = useModelState('return_formats');
 	//  height hooks
 	const [height, setHeight] = useModelState('height');
+	// width hooks
+	const [width, setWidth] = useModelState('width');
 
 	// Output format state hooks
 	const [smiles, setSmiles] = useModelState('smiles');
@@ -103,7 +104,7 @@ const render = createRender(() => {
 		<div className="ipyketcher">
 			{/* Ketcher Editor Container */}
 
-			<div style={{ width: '100%', height: height }}>
+			<div style={{ width: width, height: height }}>
 				<Editor
 					staticResourcesUrl={process.env.PUBLIC_URL} // is undefined
 					structServiceProvider={structServiceProvider}

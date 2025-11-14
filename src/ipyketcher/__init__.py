@@ -19,6 +19,7 @@ class KetcherEditor(anywidget.AnyWidget):
     return_formats = traitlets.List[str]().tag(sync=True)
 
     height = traitlets.Unicode("500px").tag(sync=True)
+    width = traitlets.Unicode("100%").tag(sync=True)
 
     # Output format traitlets
     smiles = traitlets.Unicode("").tag(sync=True)
