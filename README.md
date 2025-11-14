@@ -1,8 +1,7 @@
 # ipyketcher
 
 Ipyketcher is a widget implementation of the [Ketcher](https://lifescience.opensource.epam.com/ketcher/index.html) chemical structure editor for use in Jupyter notebooks and other environments supporting ipywidgets.
-
-![image_example](assets/screenshot_rdkit_output.png)
+![image_example](https://github.com/Jhsmit/ipyketcher/blob/3b361c5634cc416bbfd977f44e4a3c0e9db78990/assets/screenshot_rdkit_output.png)
 
 ## How to use
 
